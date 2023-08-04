@@ -3,7 +3,9 @@ class Blade < Oxidized::Model
   prompt /^>>.+\#\s/
   comment  '/* '
   cmd '/info/sys/general' do |c|
-     comment c
+    c = c.each_line.reject { |line| line.match /(.*System\sInformation.*)|(.*Switch\shas.*)/ }
+    c = c.join
+    comment c
   end
   cmd '/info/link' do |c|
      comment c
@@ -11,7 +13,13 @@ class Blade < Oxidized::Model
   cmd '/info/port' do |c|
      comment c
   end
-  cmd '/cfg/dump'
+  comment  ''
+  cmd '/cfg/dump' do |c|
+     c = c.each_line.reject { |line| line.match /(.*Configuration\sdump.*)|(.*admpw.*)|(.*esecret.*)/ }
+     c = c.join
+     c
+  end
+  comment  '/* '
   cmd '/info/sys/chassis' do |c|
      comment c
   end
